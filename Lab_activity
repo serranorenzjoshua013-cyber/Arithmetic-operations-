@@ -1,0 +1,170 @@
+# script1_basic_calculator.py
+# Basic Calculator — assigns two numbers and shows arithmetic ops
+
+def basic_calculator(a, b):
+    print(f"a = {a}, b = {b}")
+    print("Addition:", a + b)
+    print("Subtraction:", a - b)
+    print("Multiplication:", a * b)
+    print("Floating-Point Division:", a / b)
+    print("Integer Division (//):", a // b)
+    print("Modulus (%):", a % b)
+    print("Exponentiation (**):", a ** b)
+
+if __name__ == "__main__":
+    # different numbers than the example to keep it unique
+    a = 7
+    b = 3
+    basic_calculator(a, b)
+
+
+# script2_order_of_operations.py
+# Predict then check: showcases operator precedence and prints explanation.
+
+def show_result(name, expr_value):
+    print(f"{name}: {expr_value}")
+
+if __name__ == "__main__":
+    # Compute the three results from the task but using slightly different form
+    # (keeps code unique while following the exercise)
+    result1 = 5 + 3 * 2 ** 2       # 2**2 = 4 -> 3*4 = 12 -> 5 + 12 = 17
+    result2 = (5 + 3) * 2 ** 2     # (5+3)=8 -> 2**2=4 -> 8*4 = 32
+    result3 = 10 % 3 + 5 * 2       # 10%3=1 -> 5*2=10 -> 1+10 = 11
+
+    print("Predictions vs Computation:")
+    show_result("result1 (5 + 3 * 2 ** 2)", result1)
+    show_result("result2 ((5 + 3) * 2 ** 2)", result2)
+    show_result("result3 (10 % 3 + 5 * 2)", result3)
+
+    # short explanation
+    print("\nExplanation:")
+    print(" - Exponentiation binds strongest, then multiplication/modulus, then addition.")
+
+
+# script3_inches_to_feet.py
+# Convert inches -> feet and remaining inches. This version validates input.
+
+def inches_to_feet(total_inches):
+    feet = total_inches // 12
+    inches = total_inches % 12
+    return feet, inches
+
+if __name__ == "__main__":
+    raw = input("Enter the number of inches: ").strip()
+    try:
+        total_inches = int(raw)
+        feet, inches = inches_to_feet(total_inches)
+        print(f"\n{total_inches} inches is equal to {feet} feet and {inches} inches.")
+    except ValueError:
+        print("Please enter a valid integer number of inches.")
+
+# script4_movie_ticket.py
+# Determines best (single) discount among children, senior, or student.
+
+def ticket_price(age, is_student):
+    base_price = 12
+    discounts = []
+
+    if age <= 12:
+        discounts.append(("child", 3))
+    if age >= 65:
+        discounts.append(("senior", 4))
+    if is_student:
+        discounts.append(("student", 2))
+
+    # Choose the best (largest) single discount
+    if discounts:
+        best = max(discounts, key=lambda x: x[1])
+        discount_name, discount_amount = best
+    else:
+        discount_name, discount_amount = ("none", 0)
+
+    final = base_price - discount_amount
+    return final, discount_name, discount_amount
+
+if __name__ == "__main__":
+    # Example values — different defaults to make it unique
+    age = int(input("Age: ").strip())
+    student_input = input("Is student? (y/n): ").strip().lower()
+    is_student = (student_input == 'y')
+
+    price, who, off = ticket_price(age, is_student)
+    print(f"\nBest discount: {who} (-${off})")
+    print(f"Your ticket price is ${price}.")
+
+
+# script5_login_simulator.py
+# Simple login system combining username, password, and optional 2FA.
+
+CORRECT_USERNAME = "alice"
+CORRECT_PASSWORD = "wonderland"
+CORRECT_2FA_CODE = "123456"
+IS_2FA_ENABLED = True  # system flag (change as needed)
+
+def check_login(input_username, input_password, input_2fa):
+    username_ok = (input_username == CORRECT_USERNAME)
+    password_ok = (input_password == CORRECT_PASSWORD)
+    # Either 2FA not enabled or provided code matches
+    twofa_ok = (not IS_2FA_ENABLED) or (input_2fa == CORRECT_2FA_CODE)
+    return username_ok and password_ok and twofa_ok
+
+if __name__ == "__main__":
+    user = input("Enter username: ").strip()
+    pwd = input("Enter password: ").strip()
+    if IS_2FA_ENABLED:
+        code = input("Enter 2FA code: ").strip()
+    else:
+        code = ""
+
+    if check_login(user, pwd, code):
+        print("Login successful!")
+    else:
+        print("Login failed!")
+
+
+# script6_shipping_calculator.py
+# Shipping calculator with overweight, international, and premium member rules.
+
+def calculate_shipping(weight_lbs, destination, membership):
+    base = 10.0
+    total = base
+    details = [f"Base ${base:.2f}"]
+
+    if weight_lbs > 20:
+        total += 5.0
+        details.append("Overweight +$5.00")
+
+    international_surcharge_applied = False
+    if destination.lower() == "international":
+        # premium members are exempt from international surcharge
+        if membership.lower() != "premium":
+            total *= 2
+            international_surcharge_applied = True
+            details.append("International surcharge applied (doubled)")
+        else:
+            details.append("International surcharge waived for premium")
+
+    if membership.lower() == "premium":
+        discount = total * 0.20
+        total -= discount
+        details.append(f"Premium discount 20% (-${discount:.2f})")
+
+    return total, details, international_surcharge_applied
+
+if __name__ == "__main__":
+    weight = float(input("Weight (lbs): ").strip())
+    dest = input("Destination (domestic/international): ").strip()
+    member = input("Membership (standard/premium): ").strip()
+
+    final_cost, breakdown, intl_applied = calculate_shipping(weight, dest, member)
+    print("\nDetails:")
+    for d in breakdown:
+        print(" -", d)
+    print(f"\nFinal Shipping Cost: ${final_cost:.2f}")
+
+
+
+
+
+
+
